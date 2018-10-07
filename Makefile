@@ -9,3 +9,5 @@ INC=-Iinc
 	$(CC) $(CFLAGS) src/1a.c -o bin/1a -lm
 2a:
 	$(CC) $(CFLAGS) src/2a.c -o bin/2a -lm
+2b:    
+	$(NV) src/2b.cu -o bin/2b
