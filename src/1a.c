@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
         float y_true = -powf(E, -10);
         float abs_error = fabs(y_true - y[n-1]);
         float rel_error = fabs(abs_error/y_true)*100;
-        printf("Real value : %f ; Euler value : %f\nAbsolute error : %f ; Relative error : %f \% \n\n", y_true, y[n-1], abs_error, rel_error );
+        printf("Real value : %f ; Euler value : %f\nAbsolute error : %f ; Relative error : %f%% \n\n", y_true, y[n-1], abs_error, rel_error );
         // Free memory allocated in euler_cpu()
         free(y);
     }

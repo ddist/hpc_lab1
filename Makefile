@@ -1,11 +1,11 @@
 CC=gcc
 NV=nvcc
 ARCH=sm_61
-CFLAGS=-Wall
+CFLAGS=-Wall -std=c99
 NVFLAGS=-Xptxas -v
 INC=-Iinc
 
 1a:
-	$(CC) src/1a.c -o bin/1a -lm
+	$(CC) $(CFLAGS) src/1a.c -o bin/1a -lm
 2b:
-	$(CC) src/2a.c -o bin/2a -lm
+	$(CC) $(CFLAGS) src/2a.c -o bin/2a -lm
