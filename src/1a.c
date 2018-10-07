@@ -1,4 +1,40 @@
-#include math.h
+#include <time.h>
+#include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #define E 2.71828182845904523536
 
+// Sequential Euler Method for CPU
+float* euler_cpu(float y0, float dt, int n) {
+    // Allocate memory for the solution array
+    float* y = malloc(sizeof(float) * n);
+    // Initial condition
+    y[0] = y0;
+    
+    for(size_t i = 1; i < n; i++)
+    {
+        y[i] = y[i-1] + dt*powf(E, -dt*i);
+    }
+    return y;
+}
+
+int main(int argc, char const *argv[])
+{
+    clock_t t1, t2;
+    float dts[6] = {0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001};
+    float y0 = -1.0;
+    
+    for(size_t i = 0; i < 6; i++)
+    {
+        printf("Sequential Euler for dt = %f\n", dts[i]);
+        int n = (int)(10/dts[i]);
+        t1 = clock();
+        float* y = euler_cpu(y0, dts[i], n);
+        t2 = clock();
+        printf("Execution time = %f [ms]\n\n", 1000.0 * (double)(t2 - t1) / CLOCKS_PER_SEC);
+        free(y);
+    }
+
+    return 0;
+}
