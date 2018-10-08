@@ -36,10 +36,17 @@ int main(int argc, char const *argv[])
         t2 = clock();
         // Print results
         printf("Execution time : %f [ms]\n", 1000.0 * (double)(t2 - t1) / CLOCKS_PER_SEC);
-        float y_true = -powf(E, -10);
-        float abs_error = fabs(y_true - y[n-1]);
-        float rel_error = fabs(abs_error/y_true)*100;
-        printf("Real value : %f ; Euler value : %f\nAbsolute error : %f ; Relative error : %f%% \n\n", y_true, y[n-1], abs_error, rel_error );
+        float y_true;
+        float mse = 0.0;
+
+        for (size_t j = 0; j < n; j++)
+        {
+            y_true = -powf(E, -dts[i]*j);
+            mse += powf(y_true - y[j], 2.0);
+        }
+        mse = mse/n;
+        
+        printf("Real value : %f ; Euler value : %f MSE : %.12f\n\n", y_true, y[n-1], mse);
         // Free memory allocated in euler_cpu()
         free(y);
     }
