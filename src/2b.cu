@@ -18,9 +18,9 @@ int main() {
 	cudaEvent_t start, stop;
 	int e_s = 1000;
 	int n_i = 1000;
+	int block_size = 256;
 	for(int m =0; m < 5;m++){
 		e_s = e_s*10;
-		int block_size = 256;
 		float elapsed=0;
   		int grid_size = (int) ceil((float)e_s / block_size);
 		float * resultados = (float *) malloc(e_s * sizeof(float));
