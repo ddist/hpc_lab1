@@ -16,27 +16,26 @@ int main(int argc, char const *argv[]){
 	cudaEvent_t start, stop;
 	clock_t t1, t2;
 	float dts[6] = {0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001};
-    int block_size = 256;
-    for(size_t i = 0; i < 6; i++){
-    	int n = (int)(10/dts[i]);
-    	int grid_size = (int) ceil((float)n / block_size);
-    	float elapsed=0;
-    	double cpu_time = 0;
-    	double error = 0;
-    	float * resultados = (float *) malloc(n * sizeof(float));
-    	float * sumatoria = (float *) malloc(n * sizeof(float));
-    	float * d_r;
-    	float * d_s;
-    	sumatoria[0] = 1;
-    	t1 = clock(); 
-    	for(int j =1; j < n; j++){
-    		sumatoria[j] = powf(E, -dts[i]*j) + sumatoria[j-1];
-    	}
-    	t2 = clock();
-    	cudaEventCreate(&start);
+	int block_size = 256;
+	for(size_t i = 0; i < 6; i++){
+    		int n = (int)(10/dts[i]);
+    		int grid_size = (int) ceil((float)n / block_size);
+    		float elapsed=0;
+    		double cpu_time = 0;
+    		double error = 0;
+    		float * resultados = (float *) malloc(n * sizeof(float));
+    		float * sumatoria = (float *) malloc(n * sizeof(float));
+    		float * d_r;
+    		float * d_s;
+    		sumatoria[0] = 1;
+    		t1 = clock(); 
+    		for(int j =1; j < n; j++){
+    			sumatoria[j] = powf(E, -dts[i]*j) + sumatoria[j-1];
+    		}
+    		t2 = clock();
+    		cudaEventCreate(&start);
 		cudaEventCreate(&stop);
 		cudaEventRecord(start, 0);
-
 		cudaMalloc(&d_r, n * sizeof(float));
 		cudaMalloc(&d_s, n * sizeof(float));
 		cudaMemcpy(d_r, resultados, n * sizeof(float), cudaMemcpyHostToDevice);
@@ -49,7 +48,6 @@ int main(int argc, char const *argv[]){
 		cudaEventElapsedTime(&elapsed, start, stop);
 		cudaEventDestroy(start);
 		cudaEventDestroy(stop);
-
 		for(int g = 0; g < n; g++){
 			float real =  -powf(E, -dts[i]*g);
 			error = error + powf((resultados[g]-real),2);
@@ -61,8 +59,6 @@ int main(int argc, char const *argv[]){
 		printf("The elapsed time in cpu was %.2f ms \n", cpu_time);
 		printf("The total time was %.2f ms \n", elapsed + cpu_time);
 	}
-
 	return 0;
-
 }
 
